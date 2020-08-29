@@ -1,0 +1,13 @@
+function execute() {
+  const spawn = require("child_process").spawn;
+
+  var process = spawn("a.exe");
+
+  process.stdout.on("data", function (data) {
+    console.log(data.toString());
+  }); // 실행 결과
+  process.stderr.on("data", function (data) {
+    console.error(data.toString());
+  }); // 실행 결과
+}
+execute();

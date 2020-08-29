@@ -38,7 +38,7 @@ int main()
     size_t size_of_input_string;
     size_t size_of_total_buffer;
 
-    int flag = false;
+    int apply_flag = false;
     char filename[] = "org.gnome.Vino.gschema.xml";
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL)
@@ -90,7 +90,8 @@ desktop using a VNC viewer.\
 
     char *buf = (char *)memmem(head_buffer, content_size, "</schema"
                                                           ">",
-                               strlen("</schema" ">"));
+                               strlen("</schema"
+                                      ">"));
 
     strncpy(tail_buffer, buf, END_TAG_SIZE);
     printf("buf : %s", buf);
@@ -102,6 +103,20 @@ desktop using a VNC viewer.\
     strncat(total_buffer, tail_buffer, END_TAG_SIZE);
     printf("total_buffer : %s", total_buffer);
 
+    char *disable_overwrite = (char *)memmem(head_buffer, content_size, "RFB",
+                                             strlen("RFB"));
+
+    if (disable_overwrite != NULL)
+    {
+        apply_flag = false;
+        printf("apply_flag : %d", apply_flag);
+    }
+    else
+    {
+        apply_flag = true;
+        printf("apply_flag : %d", apply_flag);
+    }
+
     FILE *file_to_write;
     if ((file_to_write = fopen("result.xml", "w")) == NULL)
     {
@@ -109,8 +124,15 @@ desktop using a VNC viewer.\
         exit(EXIT_FAILURE);
     }
 
-    // write to file.
-    fwrite(total_buffer, size_of_total_buffer - 4, 1, file_to_write);
+    if (apply_flag == true)
+    {
+        // write to file.
+        fwrite(total_buffer, size_of_total_buffer, 1, file_to_write);
+    }
+    else
+    {
+        exit(EXIT_SUCCESS);
+    }
 
     if (fclose(file) != 0)
     {

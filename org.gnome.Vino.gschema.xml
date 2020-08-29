@@ -157,7 +157,7 @@
     <!-- <key name='enabled' type='b'>
 	<summary>Enable remote access to the desktop</summary>
 	<description>
-	If true, allows remote access to the desktop via the RFB
+	If true, allows remote access to the desktop via the aaa
 	protocol. Users on remote machines may then connect to the
 	desktop using a VNC viewer.
 	</description>
