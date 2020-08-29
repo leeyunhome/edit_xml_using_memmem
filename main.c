@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define END_TAG_SIZE 23
+
 char *memmem(char *p_src, int src_len, char *p_trg, int trg_len)
 {
     char *p = NULL;
@@ -75,7 +77,7 @@ desktop using a VNC viewer.\
         printf("ERROR: malloc() failed.\n");
         exit(EXIT_FAILURE);
     }
-    char *tail_buffer = (char *)malloc(27);
+    char *tail_buffer = (char *)malloc(END_TAG_SIZE);
     if (tail_buffer == NULL)
     {
         printf("ERROR: malloc() failed.\n");
@@ -88,16 +90,16 @@ desktop using a VNC viewer.\
 
     char *buf = (char *)memmem(head_buffer, content_size, "</schema"
                                                           ">",
-                               9);
+                               strlen("</schema" ">"));
 
-    strncpy(tail_buffer, buf, 27);
+    strncpy(tail_buffer, buf, END_TAG_SIZE);
     printf("buf : %s", buf);
     printf("tail_buffer : %s", tail_buffer);
 
-    memcpy(total_buffer, head_buffer, 6267);
+    memcpy(total_buffer, head_buffer, content_size - 27);
 
-    strncat(total_buffer, string_to_input, 281);
-    strncat(total_buffer, tail_buffer, 27);
+    strncat(total_buffer, string_to_input, size_of_input_string);
+    strncat(total_buffer, tail_buffer, END_TAG_SIZE);
     printf("total_buffer : %s", total_buffer);
 
     FILE *file_to_write;
