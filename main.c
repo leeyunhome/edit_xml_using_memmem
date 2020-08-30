@@ -118,7 +118,7 @@ desktop using a VNC viewer.\
     }
 
     FILE *file_to_write;
-    if ((file_to_write = fopen("result.xml", "w")) == NULL)
+    if ((file_to_write = fopen("org.gnome.Vino.gschema.xml", "w")) == NULL)
     {
         printf("Cannot open file.\n");
         exit(EXIT_FAILURE);
